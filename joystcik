@@ -1,0 +1,71 @@
+/**
+ * ジョイスティックモジュールショートコード
+ */
+
+int x_Pin = A5;
+int y_Pin = A4;
+
+void setup()
+{
+    Serial.begin(9600);
+    for(int i = 7; i <= 13; i++){
+      pinMode(i, OUTPUT);
+    }
+}
+
+void loop()
+{
+    int raw_x_val = analogRead(x_Pin);
+    // スティックの上方向を+にする
+    int raw_y_val = -analogRead(y_Pin);
+
+    // -1.0 ~ 1.0の値に変換する
+    int tempX = 2 * raw_x_val - 1024;
+    int tempY = 2 * raw_y_val + 1024;
+    float x_val = (float)tempX / 1024;
+    float y_val = (float)tempY / 1024;
+
+
+    if(raw_x_val > 687 && raw_y_val > -512){
+      digitalWrite(7, HIGH);
+      delay(300);
+      digitalWrite(7, LOW);
+      delay(300);
+    }else if(raw_x_val > 343 && raw_y_val > -512){
+      digitalWrite(8, HIGH);
+      delay(300);
+      digitalWrite(8, LOW);
+      delay(300);      
+    }else if(raw_x_val > -1 && raw_y_val > -512){
+      digitalWrite(9, HIGH);
+      delay(300);
+      digitalWrite(9, LOW);
+      delay(300);
+    }else if(raw_x_val > 687 && raw_y_val > -1024){
+      digitalWrite(10, HIGH);
+      delay(300);
+      digitalWrite(10, LOW);
+      delay(300);           
+    }else if(raw_x_val > 343 && raw_y_val > -1024){
+      digitalWrite(11, HIGH);
+      delay(300);
+      digitalWrite(11, LOW);
+      delay(300);           
+    }else{
+      digitalWrite(12, HIGH);
+      delay(300);
+      digitalWrite(12, LOW);
+      delay(300);           
+    }
+
+    Serial.print("x : ");    
+    Serial.print(x_val);
+    Serial.print(" | ");
+    Serial.print(raw_x_val);
+    Serial.print("　/ y : ");
+    Serial.print(y_val);
+    Serial.print(" | ");
+    Serial.println(raw_y_val);
+
+    delay(300);
+}
